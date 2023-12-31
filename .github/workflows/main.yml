@@ -44,3 +44,44 @@ jobs:
 
       - name: List Directory Contents
         run: ls -la
+
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker-compose:
+        image: docker/compose:1.29.2
+        options: --privileged --rm
+        ports:
+          - 8000:8000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Start Docker
+        run: |
+          docker --version
+          sudo service docker start
+
+      - name: Build and run Docker containers
+        run: |
+          docker-compose -f docker-compose.yaml up -d
+
+      - name: Run tests with coverage
+        run: |
+          coverage run -m pytest -v
+          coverage report -m --fail-under=95
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+
+      - name: Stop Docker containers
+        run: |
+          docker-compose down
