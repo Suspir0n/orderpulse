@@ -48,6 +48,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      docker-compose:
+        image: docker/compose:1.29.2
+        options: --docker-compose-file docker-compose.yaml
+        ports:
+          - 8000:8000
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
