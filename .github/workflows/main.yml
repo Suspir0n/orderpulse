@@ -24,11 +24,32 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Seu arquivo de requisitos do Python
+          pip install -r requirements.txt  # Your Python requirements file
+
+      - name: Install Commit-linter
+        run: |
+          pip install commit-linter
+
+      - name: Lint Commit
+        run: |
+          # Perform commit linting using the commitize tool
+          commit_lint_result=$(git diff --name-only HEAD^..HEAD | xargs cz check --rev-range HEAD^..HEAD)
+
+          if [[ -n "$commit_lint_result" ]]; then
+            echo "Commit linting failed. Fix linting issues in commit."
+            exit 1
+          fi
+
+  app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Your Python requirements file
 
       - name: Build and Run Docker
         run: |
           docker-compose up --build -d
-          docker-compose ps  # Exibe informações sobre os contêineres
-
-      
+          docker-compose ps  # Display information about containers

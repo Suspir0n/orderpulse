@@ -1,0 +1,16 @@
+- sign up
+ - happy path
+ - sad path
+ - prevent duplicate user
+ - hash password
+ - verify password strength
+  - should contain uppercase letter
+  - should contain lowercase letter
+  - should contain number
+  - should contain special characters
+  - should contain at least eight characters
+  - should contain at most fifteen characters
+
+- sign in
+ - happy path
+ - sad path
