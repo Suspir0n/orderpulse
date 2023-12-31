@@ -44,3 +44,35 @@ jobs:
 
       - name: List Directory Contents
         run: ls -la
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Start Docker
+        run: |
+          docker --version
+          sudo service docker start
+
+      - name: Build and run Docker containers
+        run: |
+          docker-compose up --build
+
+      - name: Run tests with coverage
+        run: |
+          coverage run -m pytest -v
+          coverage report -m --fail-under=95
+
+      - name: Stop Docker containers
+        run: |
+          docker-compose down
