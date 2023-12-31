@@ -32,18 +32,17 @@ jobs:
 
       - name: Lint Commit
         run: |
-          # Perform commit linting using the commitize tool
-          commit_lint_result=$(git diff --name-only HEAD^..HEAD | xargs cz check --rev-range HEAD^..HEAD)
-
-          if [[ -n "$commit_lint_result" ]]; then
-            echo "Commit linting failed. Fix linting issues in commit."
-            exit 1
-          fi
+          commit-lint --from=HEAD^
 
   app:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
