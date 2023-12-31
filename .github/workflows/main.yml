@@ -73,6 +73,8 @@ jobs:
         run: |
           coverage run -m pytest -v
           coverage report -m --fail-under=95
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
 
       - name: Stop Docker containers
         run: |
