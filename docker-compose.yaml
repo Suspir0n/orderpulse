@@ -38,7 +38,7 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
     volumes:
       - SonarQube_data:/opt/sonarqube/data
       - SonarQube_extensions:/opt/sonarqube/extensions
