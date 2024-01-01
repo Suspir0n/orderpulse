@@ -7,3 +7,54 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - sonarnet
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  scanner:
+    image: sonarsource/sonar-scanner-cli:latest
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    command: sonar-scanner \
+      -Dsonar.host.url=http://localhost:9000 \
+      -Dsonar.sources=. \
+      -Dsonar.tests=app/tests
+    networks:
+      - sonarnet
+
+  sonarqube:
+    image: sonarqube:community
+    depends_on:
+      - elasticsearch
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - SonarQube_data:/opt/sonarqube/data
+      - SonarQube_extensions:/opt/sonarqube/extensions
+      - SonarQube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - sonarnet
+
+volumes:
+  SonarQube_data:
+  SonarQube_extensions:
+  SonarQube_logs:
+  postgresql:
+  postgresql_data:
+  elasticsearch_data:
+
+networks:
+  sonarnet:
