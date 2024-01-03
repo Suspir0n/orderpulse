@@ -81,6 +81,9 @@ jobs:
           coverage report -m --fail-under=95
         env:
           APP_URL: ${{ secrets.APP_URL }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
       - name: Stop Docker containers
         run: |

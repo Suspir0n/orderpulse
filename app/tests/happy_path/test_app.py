@@ -1,8 +1,7 @@
 import requests
-from app.tests.happy_path import env_app_url, client
 
-def test_health_endpoint():
-    app_url = env_app_url
+def test_health_endpoint(app_client):
+    client, app_url = app_client
     response = requests.get(f"{app_url}/health")
     data = response.json()
 
@@ -11,7 +10,8 @@ def test_health_endpoint():
     assert data['data']['status'] == 'OK'
 
 
-def test_health_check():
+def test_health_check(app_client):
+    client, app_url = app_client
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {

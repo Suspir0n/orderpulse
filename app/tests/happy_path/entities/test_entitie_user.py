@@ -1,6 +1,4 @@
-from pytest import raises
 from app.core.entities.user_entities import User
-
 
 def test_entitie_user_providing_all_valid_data():
     uuid = 'abc123'
