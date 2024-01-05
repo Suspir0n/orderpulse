@@ -1,37 +1,50 @@
 from app.core.adpters.mongo_repository import MongoRepository
+from bson.objectid import ObjectId
 
+TEST_DOCUMENT = {
+    "uuid": ObjectId("61774b56c7091e830d495120"),
+    'username': 'test_user',
+    'first_name': 'test',
+    'last_name': 'testing',
+    'email': 'test@example.com',
+    'password': 'password123'
+}
+
+TEST_DOCUMENT_TWO = {
+    "uuid": ObjectId("61774b56c7091e830d495380"),
+    'username': 'test_user',
+    'first_name': 'test',
+    'last_name': 'testing',
+    'email': 'test@example.com',
+    'password': 'password123'
+}
 
 def test_create_user(mongo_client):
     repository = MongoRepository(mongo_client.test_db)
 
-    user_data = {
-        'uuid': 'abc123',
-        'username': 'test_user',
-        'first_name': 'test',
-        'last_name': 'testing',
-        'email': 'test@example.com',
-        'password': 'password123'
-    }
+    repository.create_user(TEST_DOCUMENT)
 
-    repository.create_user(user_data)
-
-    assert mongo_client.test_db.users.find_one({'uuid': 'abc123'}) is not None
+    assert mongo_client.test_db.users.find_one({'uuid': ObjectId("61774b56c7091e830d495120")}) is not None
 
 
 def test_get_by_uuid_user(mongo_client):
     repository = MongoRepository(mongo_client.test_db)
 
-    user_data = {
-        'uuid': 'abc123',
-        'username': 'test_user',
-        'first_name': 'test',
-        'last_name': 'testing',
-        'email': 'test@example.com',
-        'password': 'password123'
-    }
+    repository.create_user(TEST_DOCUMENT)
 
-    repository.create_user(user_data)
+    response = repository.get_user_by_id(user_id=ObjectId("61774b56c7091e830d495120"))
 
-    response = repository.get_user_by_id(user_id='abc123')
+    assert response['uuid'] == ObjectId("61774b56c7091e830d495120")
 
-    assert response['uuid'] == 'abc123'
+def test_get_all_user(mongo_client):
+    repository = MongoRepository(mongo_client.test_db)
+
+    repository.create_user(TEST_DOCUMENT)
+    repository.create_user(TEST_DOCUMENT_TWO)
+
+    response = repository.get_all_user()
+
+    assert response == 2
+
+
+
