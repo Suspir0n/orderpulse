@@ -23,7 +23,6 @@ class MongoRepository:
         return self.mongo_client.users.insert_one(user_data)
 
     def create_user_many(self, users_data):
-
         return self.mongo_client.users.insert_many(users_data)
 
     def get_user_by_id(self, _id):
@@ -35,6 +34,25 @@ class MongoRepository:
     def get_all_user(self):
         return self.mongo_client.users.find()
 
-    def get_update_user(self, _id, new_data):
+    def update_user(self, _id, new_data):
+        if not ObjectId.is_valid(_id):
+            raise ValueError("Invalid user ID.")
+
+        all_fields = ['username', 'first_name', 'last_name', 'email', 'password']
+
+        for field in all_fields:
+            if not isinstance(new_data[field], str):
+                raise TypeError("All fields must be strings.")
+
+        has_user_with_id = self.mongo_client.users.find_one({'_id': _id})
+        if not has_user_with_id:
+            raise ValueError("User no exists in database.")
+
         return self.mongo_client.users.replace_one({'_id': _id}, new_data)
+
+    def delete_user(self, _id):
+        if not ObjectId.is_valid(_id):
+            raise ValueError("Invalid user ID.")
+
+        return self.mongo_client.users.delete_one({'_id': _id})
 
