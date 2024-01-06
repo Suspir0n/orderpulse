@@ -3,10 +3,10 @@ name: OrderPulse Actions
 on:
   push:
     branches:
-      - '*'  # Execute in all the branchs
+      - '**'  # Execute in all the branchs
   pull_request:
     branches:
-      - '*'  # Execute in all the branchs from pull requests
+      - '**'  # Execute in all the branchs from pull requests
 
 jobs:
   build:
@@ -81,6 +81,9 @@ jobs:
           coverage report -m --fail-under=95
         env:
           APP_URL: ${{ secrets.APP_URL }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
       - name: Stop Docker containers
         run: |
