@@ -9,6 +9,16 @@ def test_create_user_one(mongo_client):
     assert created_user_result.inserted_id is not None
     assert created_user_result.inserted_id == USER_DATA['_id']
 
+def test_create_user_many(mongo_client):
+    repository = MongoRepository(mongo_client.test_db)
+
+    created_users_result = repository.create_user_many(USERS_DATA)
+
+    assert created_users_result.inserted_ids is not None
+    assert created_users_result.inserted_ids[0] == USERS_DATA[0]['_id']
+    assert created_users_result.inserted_ids[1] == USERS_DATA[1]['_id']
+    assert created_users_result.inserted_ids[2] == USERS_DATA[2]['_id']
+
 def test_get_by_uuid_user(mongo_client):
     repository = MongoRepository(mongo_client.test_db)
 
