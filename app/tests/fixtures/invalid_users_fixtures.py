@@ -34,3 +34,12 @@ INVALID_OBJECT_ID_USER_DATA = {
     'email': 'test@example.com',
     'password': 'test'
 }
+
+INVALID_USER_DATA_NO_EXISTS = {
+    '_id': ObjectId("61774b56c7091e830d495798"),
+    'username': 'test',
+    'first_name': 'tst',
+    'last_name': 'testing',
+    'email': 'test@example.com',
+    'password': 'test'
+}
