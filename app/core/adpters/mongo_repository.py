@@ -7,3 +7,7 @@ class MongoRepository:
 
     def get_user_by_id(self, user_id):
         return self.mongo_client.users.find_one({'uuid': user_id})
+
+    def get_all_user(self):
+        return self.mongo_client.users.find()
+

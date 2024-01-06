@@ -3,10 +3,10 @@ name: OrderPulse Actions
 on:
   push:
     branches:
-      - '*'  # Execute in all the branchs
+      - '**'  # Execute in all the branchs
   pull_request:
     branches:
-      - '*'  # Execute in all the branchs from pull requests
+      - '**'  # Execute in all the branchs from pull requests
 
 jobs:
   build:
