@@ -11,3 +11,6 @@ class MongoRepository:
     def get_all_user(self):
         return self.mongo_client.users.find()
 
+    def get_update_user(self, old_data, new_data):
+        return self.mongo_client.users.replace_one(old_data, new_data, True)
+
