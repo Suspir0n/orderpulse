@@ -16,3 +16,20 @@ class MongoAdapter:
 
     def get_mongo_client(self):
         return self.client
+
+    def close_connection(self):
+        self.client.close()
+
+    def get_database(self, database_name):
+        return self.client[database_name]
+
+    def get_collection(self, database_name, collection_name):
+        db = self.get_database(database_name)
+        return db[collection_name]
+
+    def check_connection(self):
+        try:
+            self.client.admin.command('ismaster')
+            return True
+        except Exception as e:
+            raise ConnectionError("Failed to establish a connection.")
