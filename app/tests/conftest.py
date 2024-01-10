@@ -1,9 +1,10 @@
-from pymongo import MongoClient
 import pytest
 import os
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 from app.app import app
+from app.core.repositories.user_repository import UserRepository
+from app.core.adpters.mongo_adapter import MongoAdapter
 
 load_dotenv()
 
@@ -18,12 +19,16 @@ def app_client():
     client = TestClient(app)
     return client, APP_URL
 
-@pytest.fixture
-def mongo_client():
-    client = MongoClient(
-        MONGO_URL,
-        username=MONGO_USERNAME,
-        password=MONGO_PASSWORD
-    )
-    yield client
-    client.drop_database('test_db')
+@pytest.fixture(scope='module')
+def user_repository():
+    return UserRepository()
+
+@pytest.fixture(scope='module')
+def mongo_adapter():
+    adapter = MongoAdapter()
+    yield adapter
+    adapter.close_connection()
+
+@pytest.fixture(autouse=True)
+def clean_database(user_repository):
+    user_repository.collection.delete_many({})
