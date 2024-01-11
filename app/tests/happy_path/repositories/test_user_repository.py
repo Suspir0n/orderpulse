@@ -23,7 +23,7 @@ def test_get_all_user(user_repository):
 
     assert user_id is not None
     assert user_id == USER_DATA['_id']
-    assert result.explain()['executionStats']['executionStages']['numReads'] == 1
+    assert len(result) == 1
 
 def test_update_user(user_repository):
     user_id = user_repository.create_user(USER_DATA).inserted_id

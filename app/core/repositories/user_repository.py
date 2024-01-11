@@ -24,7 +24,8 @@ class UserRepository:
         return self.collection.find_one({'_id': user_id})
 
     def get_all_users(self) -> User:
-        return self.collection.find()
+        result = self.collection.find()
+        return list(result)
 
     def update_user(self, user_id, updated_data) -> User:
         has_user_id_valid(user_id)
