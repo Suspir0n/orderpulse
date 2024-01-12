@@ -1,4 +1,3 @@
-from app.core.repositories.user_repository import UserRepository
 from app.tests.fixtures.valid_users_fixtures import USER_DATA
 
 def test_create_user_one(user_repository):

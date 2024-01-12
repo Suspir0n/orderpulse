@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from app.app import app
 from app.core.repositories.user_repository import UserRepository
 from app.core.adpters.mongo_adapter import MongoAdapter
+from app.core.use_cases.users.create_user_use_case import CreateUserUseCase
 
 load_dotenv()
 
@@ -22,6 +23,10 @@ def app_client():
 @pytest.fixture(scope='module')
 def user_repository():
     return UserRepository()
+
+@pytest.fixture(scope='module')
+def user_use_cases():
+    return CreateUserUseCase(user_repository=UserRepository())
 
 @pytest.fixture(scope='module')
 def mongo_adapter():

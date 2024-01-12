@@ -6,7 +6,12 @@ class CreateUserUseCase:
         self.user_repository = user_repository
 
     def execute(self, username: str, first_name: str, last_name: str, email: str, password: str) -> User:
-        new_user = User(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
-        created_user = self.user_repository.create_user(new_user.to_dict())
+        new_user = User(
+            username=username,
+            first_name=first_name,
+            last_name=last_name, email=email,
+            password=password
+        ).convert_to_dict()
+        created_user = self.user_repository.create_user(new_user)
 
         return created_user
