@@ -43,3 +43,11 @@ INVALID_USER_DATA_NO_EXISTS = {
     'email': 'test@example.com',
     'password': 'test'
 }
+
+INVALID_FIELD_TO_USER_USE_CASE = {
+    '_id': ObjectId("61774b56c7091e830d495123"),
+    'useame': 'test',
+    'last_name': 'testing',
+    'email': 'test@example.com',
+    'password': 'test'
+}
