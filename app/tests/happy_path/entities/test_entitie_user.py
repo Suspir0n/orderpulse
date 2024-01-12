@@ -7,7 +7,7 @@ def test_entitie_user_providing_all_valid_data():
     email = 'test@testing.com'
     password = '1234'
 
-    user = User(username, first_name, last_name, email, password)
+    user = User.create(username, first_name, last_name, email, password)
 
     assert user.username == username
     assert user.first_name == first_name

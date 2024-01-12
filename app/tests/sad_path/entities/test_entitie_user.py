@@ -9,6 +9,6 @@ def test_entitie_user_providing_missing_data():
     email = 'test@testing.com'
 
     with raises(TypeError) as excinfo:
-        User(username, first_name, last_name, email)
+        User.create(username, first_name, last_name, email)
 
     assert "missing 1 required" in str(excinfo.value)
