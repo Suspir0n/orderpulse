@@ -10,29 +10,33 @@ class UserRepository:
         self.name_collection = 'users'
         self.collection = self.mongo_adapter.get_collection(self.name_db, self.name_collection)
 
-    def create_user(self, user_data) -> User:
+    def create_user(self, user_data):
+        user_entity = User.create(**user_data)
+
         fields_required(user_data=user_data)
         type_fields_valid(user_data=user_data)
 
         is_existing_user = self.collection.find_one({'email': user_data['email']})
         has_user_in_db(is_existing_user=is_existing_user)
 
+        user_data = user_entity.dict(by_alias=True, exclude_unset=True)
+
         return self.collection.insert_one(user_data)
 
-    def get_user_by_id(self, user_id) -> User:
+    def get_user_by_id(self, user_id):
         has_user_id_valid(user_id)
         return self.collection.find_one({'_id': user_id})
 
-    def get_all_users(self) -> User:
+    def get_all_users(self):
         result = self.collection.find()
         return list(result)
 
-    def update_user(self, user_id, updated_data) -> User:
+    def update_user(self, user_id, updated_data):
         has_user_id_valid(user_id)
         type_fields_valid(updated_data)
 
         return self.collection.update_one({'_id': user_id}, {'$set': updated_data})
 
-    def delete_user(self, user_id) -> User:
+    def delete_user(self, user_id):
         has_user_id_valid(user_id)
         return self.collection.delete_one({'_id': user_id})
