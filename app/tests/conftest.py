@@ -6,6 +6,7 @@ from app.app import app
 from app.core.repositories.user_repository import UserRepository
 from app.core.adpters.mongo_adapter import MongoAdapter
 from app.core.use_cases.users.create_user_use_case import CreateUserUseCase
+from app.core.use_cases.users.get_by_id_user_use_case import GetByIdUserUseCase
 
 load_dotenv()
 
@@ -25,8 +26,12 @@ def user_repository():
     return UserRepository()
 
 @pytest.fixture(scope='module')
-def user_use_cases():
+def create_user_use_case():
     return CreateUserUseCase(user_repository=UserRepository())
+
+@pytest.fixture(scope='module')
+def get_by_user_use_case():
+    return GetByIdUserUseCase(user_repository=UserRepository())
 
 @pytest.fixture(scope='module')
 def mongo_adapter():
